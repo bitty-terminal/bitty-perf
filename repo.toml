@@ -1,0 +1,16 @@
+[repo]
+name = "bitty-perf"
+kind = "tooling"
+lang = "rust"
+role = "candidate external performance suite; metadata-only scaffold"
+owner = "bitty-core"
+docs = "bitty-terminal-docs"
+
+[bootstrap]
+version = "0.0.1"
+edition = "2024"
+rust_version = "1.85"
+status = "metadata-only"
+
+[contracts]
+status = "pending W-75; no migrated suite"
