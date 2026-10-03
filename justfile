@@ -32,6 +32,14 @@ paths:
     pattern='(/hom''e/|/Use''rs/|/mn''t/[A-Za-z]|[A-Za-z]:[\\/]Use''rs[\\/])'
     found=0
     while IFS= read -r -d '' f; do
+        # Excluded, mirroring the product workspace gate scope: vendored
+        # binary fixtures embed neutral placeholder bytes, and integration
+        # tests carry socket-dir fixtures plus the absence-assertion literals
+        # that prove no host path leaks into artifacts. Fixture text
+        # (READMEs, snapshots) stays scanned.
+        case "$f" in
+            *.bin|*/tests/*) continue ;;
+        esac
         if grep -nEI "$pattern" "$f"; then found=1; fi
     done < <(git ls-files -z --cached --others --exclude-standard)
     if [ "$found" -ne 0 ]; then
@@ -50,10 +58,31 @@ check:
     just metadata
     just hygiene
     just paths
+    just rust-fmt
+    just rust-clippy
+    just rust-test
 
 workflows:
     actionlint
     act -n
+
+# Rust validation-suite gates (W-105 relocation, bitty CTX-0931). These prove
+# the moved suite against its pinned production revision (see
+# crates/bitty-perf/Cargo.toml), including the bench compile/run gate and the
+# parser-throughput regression floor; they are suite evidence, unlike the
+# metadata gates above. Run via the justfile, never bare.
+rust-fmt:
+    cargo fmt --all -- --check
+
+rust-clippy:
+    cargo clippy --workspace --all-targets --locked -- -D warnings
+
+rust-test:
+    cargo test --workspace --locked --all-targets
+    cargo test --workspace --doc --locked
+
+rust-typecheck:
+    cargo check --workspace --all-targets --locked
 
 # Publish a redacted CarryCtx snapshot to refs/heads/carryctx-snapshots.
 workflow-publish:

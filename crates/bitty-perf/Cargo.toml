@@ -1,0 +1,102 @@
+[package]
+name = "bitty-perf"
+description = "Performance baseline harness owner for benches (Phase F) — headless, bounded, forbid(unsafe)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/bitty-terminal/bitty-perf"
+keywords = ["benchmark", "performance", "bitty"]
+categories = ["development-tools"]
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+# W-105 relocation (bitty CTX-0931): this suite no longer lives in the bitty
+# product workspace. bitty is consumed as an external, immutable production
+# revision (W-75 pin discipline): git dependencies at an exact commit, never
+# path dependencies into a mutable checkout, never a branch or tag ref.
+# Tested production revision: bitty@9bc73207ab559d4d5de4ef283a4056dc8857de01
+# (origin/main at move time). Pin bumps are owned, reviewed changes here.
+bitty-vt = { git = "https://github.com/bitty-terminal/bitty", rev = "9bc73207ab559d4d5de4ef283a4056dc8857de01" }
+bitty-term-state = { git = "https://github.com/bitty-terminal/bitty", rev = "9bc73207ab559d4d5de4ef283a4056dc8857de01" }
+bitty-render = { git = "https://github.com/bitty-terminal/bitty", rev = "9bc73207ab559d4d5de4ef283a4056dc8857de01" }
+bitty-platform = { git = "https://github.com/bitty-terminal/bitty", rev = "9bc73207ab559d4d5de4ef283a4056dc8857de01" }
+bitty-pty = { git = "https://github.com/bitty-terminal/bitty", rev = "9bc73207ab559d4d5de4ef283a4056dc8857de01" }
+bitty-runtime = { git = "https://github.com/bitty-terminal/bitty", rev = "9bc73207ab559d4d5de4ef283a4056dc8857de01" }
+bitty-config = { git = "https://github.com/bitty-terminal/bitty", rev = "9bc73207ab559d4d5de4ef283a4056dc8857de01" }
+bitty-ui = { git = "https://github.com/bitty-terminal/bitty", rev = "9bc73207ab559d4d5de4ef283a4056dc8857de01" }
+pollster = "1.0"
+winit = "0.30.13"
+
+[[bench]]
+name = "vt_throughput"
+path = "../../benches/vt_throughput.rs"
+harness = false
+
+[[bench]]
+name = "parser_throughput"
+path = "../../benches/parser_throughput.rs"
+harness = false
+
+[[bench]]
+name = "terminal_state"
+path = "../../benches/terminal_state.rs"
+harness = false
+
+[[bench]]
+name = "reflow"
+path = "../../benches/reflow.rs"
+harness = false
+
+[[bench]]
+name = "search"
+path = "../../benches/search.rs"
+harness = false
+
+[[bench]]
+name = "render_prepare"
+path = "../../benches/render_prepare.rs"
+harness = false
+
+[[bench]]
+name = "startup_real"
+path = "../../benches/startup_real.rs"
+harness = false
+
+[[bench]]
+name = "latency_real"
+path = "../../benches/latency_real.rs"
+harness = false
+
+[[bench]]
+name = "idle_real"
+path = "../../benches/idle_real.rs"
+harness = false
+
+[[bench]]
+name = "real_window"
+path = "../../benches/real_window.rs"
+harness = false
+
+[[bench]]
+name = "real_soak"
+path = "../../benches/real_soak.rs"
+harness = false
+
+[[bench]]
+name = "dogfood_session"
+path = "../../benches/dogfood_session.rs"
+harness = false
+
+[[bench]]
+name = "typical_session"
+path = "../../benches/typical_session.rs"
+harness = false
+
+[[bench]]
+name = "throughput_floor"
+path = "../../benches/throughput_floor.rs"
+harness = false
