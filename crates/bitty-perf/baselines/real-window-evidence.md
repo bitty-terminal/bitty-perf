@@ -53,14 +53,17 @@ After this task:
 - `benches/real_window.rs` — human-facing `harness = false` bench.
 - `crates/bitty-perf/tests/real_window_evidence.rs` — bounded CI contract test.
 - `crates/bitty-perf/baselines/pb-real-window.json` — committed artifact.
-- `crates/bitty-terminal` emits an opt-in `bitty perf: first-frame` stdout marker
+- The harness expects a separately built, instrumented `bitty` executable to
+  emit the opt-in `bitty perf: first-frame` stdout marker
   (gated on `BITTY_PERF_STARTUP_MARKER`) after the first frame presents.
 
 ## Measurement contract
 
 - **Opt-in.** A run requires `BITTY_PERF_REAL_WINDOW=1` and a resolvable
-  `bitty` binary (`BITTY_PERF_BIN`, else the discovered `target/release`,
-  then `target/debug`). Without either the harness returns `Unavailable` with
+  `bitty` binary. Set `BITTY_PERF_BIN` to the separately built executable.
+  If unset, discovery checks this workspace's `target/release/bitty`, then
+  `target/debug/bitty`. Building this workspace does not build the `bitty`
+  executable. If no executable resolves, the harness returns `Unavailable` with
   a reason and writes nothing; headless CI reports `Unavailable` by design and
   remains green.
 - **No fabricated numbers.** `--write-baseline` refuses to write when either

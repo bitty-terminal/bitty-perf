@@ -56,7 +56,10 @@ fn synthetic_corpus(len: usize) -> Vec<u8> {
 }
 
 /// Parse `bytes` with `Parser::advance` and return action count, bounded.
-fn parse_bounded(bytes: &[u8]) -> usize {
+///
+/// This is the timed path: a single bulk parse per call, so the reported
+/// MB/s reflects true `Parser::advance` throughput.
+fn parse_bulk(bytes: &[u8]) -> usize {
     assert!(
         bytes.len() <= MAX_CORPUS_BYTES * 16,
         "corpus bound for bench segment"
@@ -68,6 +71,16 @@ fn parse_bounded(bytes: &[u8]) -> usize {
             count += 1;
         }
     });
+    count
+}
+
+/// Parse `bytes` and assert chunking invariance: the byte-by-byte re-parse
+/// must observe the same action count as the bulk parse.
+///
+/// Callers run this once per corpus, outside the timed loop; the slower
+/// byte-at-a-time pass must never dilute the timed measurement.
+fn parse_bounded(bytes: &[u8]) -> usize {
+    let count = parse_bulk(bytes);
     // Determinism check: byte-by-byte re-parse must match.
     let mut parser2 = Parser::new();
     let mut count2 = 0usize;
@@ -84,11 +97,13 @@ fn parse_bounded(bytes: &[u8]) -> usize {
 
 fn bench_once(corpus_len: usize, iters: usize) -> (f64, usize) {
     let corpus = synthetic_corpus(corpus_len);
+    // Chunking invariance is asserted once per corpus, before timing starts.
+    let _ = parse_bounded(&corpus);
     let total_bytes = corpus.len() * iters;
     let start = Instant::now();
     let mut total_actions = 0usize;
     for _ in 0..iters {
-        total_actions += black_box(parse_bounded(black_box(&corpus)));
+        total_actions += black_box(parse_bulk(black_box(&corpus)));
     }
     let elapsed = start.elapsed();
     let secs = elapsed.as_secs_f64().max(1e-9);

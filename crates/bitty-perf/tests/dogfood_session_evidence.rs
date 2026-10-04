@@ -115,7 +115,10 @@ fn schedule_json_is_provenanced_and_portable() {
         assert!(json.contains(key), "schedule json missing {key}:\n{json}");
     }
     assert!(
-        !json.contains("/home/") && !json.contains("/mnt/") && !json.contains("C:\\\\Users"),
+        !json.contains("/home/")
+            && !json.contains("/mnt/")
+            && !json.contains("C:\\Users")
+            && !json.contains("C:\\\\Users"),
         "schedule must not embed a host path:\n{json}"
     );
 }
@@ -199,7 +202,10 @@ fn committed_session_baseline_is_provenanced_and_honest() {
         "committed baseline still carries the bootstrap placeholder"
     );
     assert!(
-        !text.contains("/home/") && !text.contains("/mnt/") && !text.contains("C:\\\\Users"),
+        !text.contains("/home/")
+            && !text.contains("/mnt/")
+            && !text.contains("C:\\Users")
+            && !text.contains("C:\\\\Users"),
         "baseline must not embed a host path"
     );
     assert!(
@@ -255,4 +261,46 @@ fn app_selection_stays_validated_and_canonical() {
     assert_eq!(rss_trend(&[]), None);
     let trend = rss_trend(&[200.0, 250.0]).expect("trend");
     assert!((rss_growth_pct(&trend) - 25.0).abs() < f64::EPSILON);
+}
+
+#[test]
+fn non_finite_rss_serializes_as_null_never_nan_or_inf() {
+    // A NaN sample can reach the trend's first/last slots; Rust would print
+    // `NaN`/`inf`, which is not valid JSON. Finite values keep three
+    // decimals; non-finite values become null.
+    let config = SessionConfig::from_env();
+    let plan = plan_cycles(600, 300);
+    let cycles = vec![SessionCycle {
+        index: 0,
+        at_secs: 0,
+        screenshot: "cycle-0000.png".to_string(),
+        rss_mb: Some(f64::NAN),
+        grid_text_bytes: Some(1024),
+        apps_driven: 6,
+        driver_ok: true,
+    }];
+    let trend = rss_trend(&[f64::NAN, 400.0]);
+    let json = session_evidence_json(&config, &plan, &cycles, trend, None, &test_meta());
+    for token in ["\": NaN", "\": inf", "\": -inf", ": NaN", ": inf", ": -inf"] {
+        assert!(
+            !json.contains(token),
+            "measured evidence must stay valid JSON (found {token}):\n{json}"
+        );
+    }
+    assert!(
+        json.contains("\"rss_first_mb\": null"),
+        "non-finite trend first must be null:\n{json}"
+    );
+    assert!(
+        json.contains("\"rss_mb\": null"),
+        "non-finite per-cycle rss must be null:\n{json}"
+    );
+
+    let finite = rss_trend(&[400.0, 405.5]).expect("trend");
+    let finite_json =
+        session_evidence_json(&config, &plan, &cycles, Some(finite), None, &test_meta());
+    assert!(
+        finite_json.contains("\"rss_first_mb\": 400.000"),
+        "finite trend values keep three decimals:\n{finite_json}"
+    );
 }

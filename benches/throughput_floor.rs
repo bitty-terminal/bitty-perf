@@ -102,9 +102,12 @@ fn meta_from_env(report: &bitty_perf::throughput_floor::ThroughputFloorReport) -
         issues: vec![1061],
         captured_at: env("BITTY_PERF_DATE", "unspecified-date"),
         revision: env("BITTY_PERF_REVISION", "unspecified-revision"),
-        command: format!(
-            "cargo bench -p bitty-perf --bench throughput_floor -- --nocapture (sample_bytes={} rounds={})",
-            report.sample_bytes, report.rounds
+        command: env(
+            "BITTY_PERF_COMMAND",
+            &format!(
+                "cargo bench -p bitty-perf --bench throughput_floor -- --nocapture --write-baseline (sample_bytes={} rounds={})",
+                report.sample_bytes, report.rounds
+            ),
         ),
         profile: env("BITTY_PERF_PROFILE", "bench (release)"),
     }

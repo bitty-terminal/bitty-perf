@@ -91,10 +91,15 @@ only once the remaining Tier 1 platform legs are measured.
 
 ## Reproduction
 
-From a clean worktree at the base revision, with the pinned toolchain:
+From a clean worktree of `bitty-terminal/bitty` at the base revision
+above (`b0b1155`), with the pinned toolchain
+(this suite cannot build `bitty-terminal` from this repository's root;
+it lives in the upstream product workspace):
 
 ```sh
-CARGO_TARGET_DIR="$(mktemp -d)" cargo build --release --locked -p bitty-terminal
+CARGO_TARGET_DIR="$(mktemp -d)"
+export CARGO_TARGET_DIR
+cargo build --release --locked -p bitty-terminal
 stat -c '%s %n' "$CARGO_TARGET_DIR/release/bitty"
 strip -o /tmp/bitty-stripped "$CARGO_TARGET_DIR/release/bitty"
 stat -c '%s %n' /tmp/bitty-stripped

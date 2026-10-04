@@ -39,6 +39,8 @@
 use std::hint::black_box;
 use std::time::Instant;
 
+use super::idle::escape_json as escape;
+
 use bitty_render::glyph::{
     BitmapFormat, FontId, FontQuery, FontStyle, GlyphBitmap, GlyphMetrics, GlyphRasterizer,
     RasterKey,
@@ -305,10 +307,6 @@ pub fn measure_default() -> Result<ThroughputFloorReport, String> {
 // Committed baseline artifact
 // ---------------------------------------------------------------------------
 
-fn escape(s: &str) -> String {
-    s.replace('\\', "\\\\").replace('"', "\\\"")
-}
-
 /// The committed evidence artifact, embedded at compile time.
 #[must_use]
 pub const fn committed_baseline_json() -> &'static str {
@@ -424,5 +422,38 @@ mod tests {
         assert!(report.median_mb_s > 0.0);
         assert!(report.actions_final_round > 0);
         assert!(report.renders_final_round > 0);
+    }
+
+    #[test]
+    fn control_chars_in_provenance_stay_valid_json() {
+        // Environment-supplied provenance can carry newlines or other control
+        // characters; the shared escaper must keep the artifact valid JSON.
+        assert_eq!(escape("a\nb\tc\"d\\e\x01f"), "a\\nb\\tc\\\"d\\\\e\\u0001f");
+        let report = ThroughputFloorReport {
+            sample_bytes: 1024,
+            rounds: 1,
+            round_mb_s: vec![42.0],
+            median_mb_s: 42.0,
+            actions_final_round: 1,
+            renders_final_round: 1,
+            elapsed_secs: 0.001,
+        };
+        let meta = crate::real_window::BaselineMeta {
+            task: "CTX-0676".to_string(),
+            issues: vec![1061],
+            captured_at: "2026-09-22".to_string(),
+            revision: "test\nrevision".to_string(),
+            command: "line one\nline two".to_string(),
+            profile: "bench (release)".to_string(),
+        };
+        let json = baseline_json(&report, &meta);
+        assert!(
+            json.contains("\"revision\": \"test\\nrevision\""),
+            "newline in provenance must be escaped:\n{json}"
+        );
+        assert!(
+            json.contains("\"command\": \"line one\\nline two\""),
+            "newline in command must be escaped:\n{json}"
+        );
     }
 }

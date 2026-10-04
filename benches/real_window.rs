@@ -53,11 +53,21 @@ fn main() {
         }
         let meta = meta_from_env();
         let json = baseline_json(&startup, &idle, &meta);
-        if let Err(err) = std::fs::write(&path, json) {
-            eprintln!("cannot write {path}: {err}");
+        // Bench executables run with the package directory as CWD, so a
+        // repo-relative path must resolve against the workspace root.
+        let out_path = {
+            let candidate = std::path::Path::new(&path);
+            if candidate.is_absolute() {
+                candidate.to_path_buf()
+            } else {
+                bitty_perf::real_window::workspace_root().join(candidate)
+            }
+        };
+        if let Err(err) = std::fs::write(&out_path, json) {
+            eprintln!("cannot write {}: {err}", out_path.display());
             exit(2);
         }
-        println!("wrote real-window baseline to {path}");
+        println!("wrote real-window baseline to {}", out_path.display());
         println!("baseline evidence: {REAL_WINDOW_BASELINE_REL_PATH}");
         return;
     }

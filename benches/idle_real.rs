@@ -96,6 +96,10 @@ fn main() {
             exit(2);
         }
         let meta = meta_from_env();
+        if !bitty_perf::idle::provenance_complete(&meta) {
+            eprintln!("refusing to write baseline: set BITTY_PERF_DATE and BITTY_PERF_REVISION");
+            exit(2);
+        }
         let json = baseline_json(&report, &cpu, &meta);
         let out_path = resolve_out(&path);
         if let Err(err) = std::fs::write(&out_path, json) {

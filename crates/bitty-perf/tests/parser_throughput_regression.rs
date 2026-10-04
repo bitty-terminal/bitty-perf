@@ -101,9 +101,11 @@ fn pathological_regression_is_caught() {
     // corpus collapses to the floor must fail against the committed baseline.
     let baseline = committed_baseline().expect("committed baseline must parse");
     let mut report = ci_report().expect("bounded CI measurement must run");
+    let plain = report.mb_s(PLAIN_TEXT_ID).expect("plain corpus measured");
     for corpus in report.corpora.iter_mut() {
         if corpus.id != PLAIN_TEXT_ID {
-            corpus.mb_s = 0.5;
+            // 100x collapse relative to plain, independent of host speed.
+            corpus.mb_s = plain * 0.01;
         }
     }
     let regression = regression_check(&report, &baseline);

@@ -159,7 +159,11 @@ fn truncate(s: String, max: usize) -> String {
         s
     } else {
         let mut out = s;
-        out.truncate(max);
+        let mut cut = max;
+        while !out.is_char_boundary(cut) {
+            cut -= 1;
+        }
+        out.truncate(cut);
         out
     }
 }
@@ -748,6 +752,24 @@ mod tests {
         assert_eq!(dist_from_reports.p99_ms, 250.0);
         assert!(!dist_from_reports.meets_p50()); // 120 > 100
         assert!(!dist_from_reports.meets_p99()); // 250 > 200
+    }
+
+    #[test]
+    fn truncate_never_splits_a_char_boundary() {
+        assert_eq!(truncate("short".to_string(), 80), "short");
+        assert_eq!(truncate("exactly".to_string(), 7), "exactly");
+        // Multi-byte text across the cut point must not panic: the cut moves
+        // back to the previous char boundary ("é" is two bytes in UTF-8).
+        let text = "héllo wörld".to_string();
+        let cut = truncate(text.clone(), 2);
+        assert!(cut.len() <= 2, "truncated text exceeds the bound");
+        assert!(text.starts_with(&cut), "truncation must keep a prefix");
+        assert_eq!(cut, "h");
+        // A bound landing inside a 4-byte emoji still yields valid UTF-8.
+        let emoji = "ab💥cd".to_string();
+        let cut_emoji = truncate(emoji.clone(), 4);
+        assert!(emoji.starts_with(&cut_emoji));
+        assert_eq!(cut_emoji, "ab");
     }
 
     #[test]

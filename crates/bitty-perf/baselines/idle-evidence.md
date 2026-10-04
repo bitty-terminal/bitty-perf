@@ -82,7 +82,7 @@ wall)` from `/proc/<pid>/stat` (comm parsed after the last `)`, safe Rust);
 - **No fabricated numbers.** `--write-baseline` exits 2 when the invariant
   fails or the window is unavailable; non-Linux hosts report `Unavailable`
   with a reason and exit 0.
-- **Bounded.** Window clamped to 1–300 s (`BITTY_PERF_IDLE_SECS`, default 60);
+- **Bounded.** Window clamped to 1–600 s (`BITTY_PERF_IDLE_SECS`, default 60);
   tick/render cost samples stay at 3000/2000 iterations.
 - **Host context from the environment.** OS, arch, toolchain, CPU count, and
   total memory come from `std::env::consts`, `available_parallelism`, and

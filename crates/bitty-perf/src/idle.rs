@@ -731,7 +731,11 @@ fn parse_status_ctxt(status: &str) -> Option<(u64, u64)> {
     Some((vol?, invol?))
 }
 
-fn escape_json(value: &str) -> String {
+/// Escape a string for embedding in hand-rolled evidence JSON: quotes,
+/// backslashes, and every control character (newline, tab, and `U+0000`–
+/// `U+001F` as `\u00xx`). Shared by the other serializers so an
+/// environment-supplied provenance field can never break JSON validity.
+pub(crate) fn escape_json(value: &str) -> String {
     let mut out = String::with_capacity(value.len());
     for ch in value.chars() {
         match ch {
@@ -745,6 +749,16 @@ fn escape_json(value: &str) -> String {
         }
     }
     out
+}
+
+/// `true` when baseline provenance is fully specified (no placeholder).
+///
+/// `--write-baseline` callers refuse to commit the artifact when the capture
+/// date or revision is missing, so a committed baseline never carries
+/// `unspecified-*` provenance.
+#[must_use]
+pub fn provenance_complete(meta: &IdleBaselineMeta) -> bool {
+    !(meta.captured_at.starts_with("unspecified") || meta.revision.starts_with("unspecified"))
 }
 
 /// Serialize a PB-7 report plus provenance into the committed shape.
@@ -926,6 +940,31 @@ mod tests {
         ] {
             assert!(names.contains(&expected), "missing idle check {expected}");
         }
+    }
+
+    #[test]
+    fn baseline_write_requires_full_provenance() {
+        let complete = IdleBaselineMeta {
+            task: "CTX-0636".to_string(),
+            issues: vec![1062],
+            captured_at: "2026-09-22".to_string(),
+            revision: "abc123".to_string(),
+            command: "just perf-idle-baseline".to_string(),
+            profile: "bench (release)".to_string(),
+        };
+        assert!(provenance_complete(&complete));
+        let mut missing_date = complete.clone();
+        missing_date.captured_at = "unspecified-date".to_string();
+        assert!(
+            !provenance_complete(&missing_date),
+            "a missing capture date must block the baseline write"
+        );
+        let mut missing_revision = complete.clone();
+        missing_revision.revision = "unspecified-revision".to_string();
+        assert!(
+            !provenance_complete(&missing_revision),
+            "a missing revision must block the baseline write"
+        );
     }
 
     #[test]

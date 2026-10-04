@@ -440,10 +440,10 @@ pub fn session_evidence_json(
         Some(ref trend) if measured => {
             out.push_str(&format!(
                 "    \"rss_first_mb\": {},\n    \"rss_last_mb\": {},\n    \"rss_max_mb\": {},\n    \"rss_growth_pct\": {},\n",
-                trend.first_mb,
-                trend.last_mb,
-                trend.max_mb,
-                rss_growth_pct(trend),
+                fmt_finite_mb(trend.first_mb),
+                fmt_finite_mb(trend.last_mb),
+                fmt_finite_mb(trend.max_mb),
+                fmt_finite_mb(rss_growth_pct(trend)),
             ));
         }
         _ => {
@@ -468,7 +468,7 @@ pub fn session_evidence_json(
             escape(&SessionCycle::screenshot_basename(&cycle.screenshot)),
         ));
         match cycle.rss_mb {
-            Some(rss) => out.push_str(&format!("\"rss_mb\": {rss}, ")),
+            Some(rss) => out.push_str(&format!("\"rss_mb\": {}, ", fmt_finite_mb(rss))),
             None => out.push_str("\"rss_mb\": null, "),
         }
         match cycle.grid_text_bytes {
@@ -537,4 +537,15 @@ pub fn format_session_report(
 
 fn escape(value: &str) -> String {
     value.replace('\\', "\\\\").replace('"', "\\\"")
+}
+
+/// Format an RSS number for evidence JSON: three decimals when finite, `null`
+/// otherwise (`NaN`/`inf` are not valid JSON; a NaN sample can reach `first`
+/// or `last` through [`rss_trend`]).
+fn fmt_finite_mb(value: f64) -> String {
+    if value.is_finite() {
+        format!("{value:.3}")
+    } else {
+        "null".to_string()
+    }
 }
