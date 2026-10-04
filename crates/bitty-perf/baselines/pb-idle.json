@@ -6,7 +6,7 @@
   "revision": "436283e68543b42aa0b2dff1afcbe291c97ac1e9",
   "command": "cargo bench -p bitty-perf --bench idle_real -- --nocapture --idle-window 600 --write-baseline crates/bitty-perf/baselines/pb-idle.json",
   "profile": "bench (release)",
-  "budget_ref": "docs/specifications/performance-budget-rfc.md#pb-7-idle-resource-usage",
+  "budget_ref": "bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-7-idle-resource-usage",
   "host_context": {
     "os": "linux",
     "arch": "x86_64",

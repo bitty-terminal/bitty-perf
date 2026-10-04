@@ -32,8 +32,8 @@ sidebar_order: 57
   record, and a CI contract test that keeps the table honest (every listed
   artifact exists, every artifact is provenanced). It changes no accepted
   budget or gate threshold.
-- Authority: canonical budgets live in the `bitty-terminal-docs` submodule
-  (`docs/specifications/performance-budget-rfc.md`); this file is the
+- Authority: canonical budgets live in the `bitty-terminal-docs` corpus (reference-only; no docs mount in this repository)
+  (`bitty-terminal-docs/specifications/performance-budget-rfc.md`); this file is the
   repository-local pin record PERF-01 asks for.
 
 ## Harness inventory (pinned)
@@ -78,8 +78,9 @@ comparable:
 - **PB-6 floor corpus:** fixed synthetic segment (`SEGMENT_BYTES`), 1 MiB per
   round × 3 rounds, median reported; escape-leaning density. Seed/compat
   reuse is deferred to the PERF-01 corpus decision.
-- **Parser baseline (M1-11):** reused `crates/bitty-vt/seeds/*.bin` +
-  `tests/compat/*/corpus/*.bin` + synthetic escape storm; the only
+- **Parser baseline (M1-11):** reused `fixtures/bitty-vt-seeds/*.bin` +
+  `fixtures/compat/*/corpus/*.bin` (both vendored from upstream
+  `crates/bitty-vt/seeds/` and `tests/compat/`) + synthetic escape storm; the only
   file-backed corpus, and the files are committed inputs, not discoveries.
 
 No harness globs the working tree for inputs at measure time.
@@ -127,7 +128,7 @@ in `performance-budget-rfc.md` are untouched; OQ-100 owns the gating decision.
 
 ## References
 
-- `docs/specifications/performance-budget-rfc.md` (PB-1..PB-7)
+- `bitty-terminal-docs/specifications/performance-budget-rfc.md` (PB-1..PB-7)
 - `crates/bitty-perf/src/lib.rs` (single budget-constant owner)
 - `crates/bitty-perf/tests/harness_pin_evidence.rs` (pin contract)
 - Issue #1055 (PERF-01)

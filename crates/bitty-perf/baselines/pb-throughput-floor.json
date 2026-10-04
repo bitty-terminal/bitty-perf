@@ -6,7 +6,7 @@
   "revision": "c70b9f2b00facc4d848ce3f38df1f47a95a423fe",
   "command": "cargo bench -p bitty-perf --bench throughput_floor -- --nocapture (sample_bytes=1048576 rounds=3)",
   "profile": "bench (release)",
-  "budget_ref": "docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor",
+  "budget_ref": "bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor",
   "host_context": {
     "os": "linux",
     "arch": "x86_64",

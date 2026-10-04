@@ -784,7 +784,7 @@ pub fn baseline_json(
         escape_json(&meta.profile)
     ));
     out.push_str(
-        "  \"budget_ref\": \"docs/specifications/performance-budget-rfc.md#pb-7-idle-resource-usage\",\n",
+        "  \"budget_ref\": \"bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-7-idle-resource-usage\",\n",
     );
     out.push_str("  \"host_context\": {\n");
     out.push_str(&format!("    \"os\": \"{}\",\n", escape_json(&host.os)));

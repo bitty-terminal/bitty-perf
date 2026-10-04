@@ -92,8 +92,8 @@ linked into a product artifact.
 ## Parser throughput baseline (CTX-0576, M1-11)
 
 `src/parser_throughput.rs` measures `bitty_vt::Parser::advance` in isolation
-over reused deterministic corpora (`bitty-vt` seeds, `tests/compat/*/corpus`,
-a synthetic escape storm) and compares the escape/plain throughput ratios
+over reused deterministic corpora (`bitty-vt` seeds, `fixtures/compat/*/corpus`
+vendored from upstream `tests/compat/`, a synthetic escape storm) and compares the escape/plain throughput ratios
 against `baselines/parser-throughput.json`. The gate is generous
 (4× ratio collapse) so shared runners and debug `cargo test` builds do not
 flake; it catches pathological regressions only. Run `just perf-parser` for

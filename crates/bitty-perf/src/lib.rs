@@ -7,7 +7,7 @@
 //! and new real-window benches
 //! `benches/{startup_real,latency_real,idle_real}.rs` (CTX-0100).
 //! All are headless, bounded, `forbid(unsafe)` — see
-//! `docs/specifications/performance-budget-rfc.md` PB-1..PB-7.
+//! `bitty-terminal-docs/specifications/performance-budget-rfc.md` PB-1..PB-7.
 //!
 //! CTX-0100 upgrade: the former `--help` proxy is replaced by
 //! instrumentation that covers the full `bitty-terminal` cold path:
@@ -20,8 +20,14 @@
 //! stage breakdown and p50/p99, and idle is gated by the frame-on-demand
 //! invariant (`tick == None` → no polling loop → ≤1 % CPU).
 //!
-//! Budget reference: `docs/specifications/performance-budget-rfc.md#budgets`.
-//! Evidence: `docs/product/perf-evidence.md` (CTX-0100, real measurements from `c0aadd2+`).
+//! Budget reference: `bitty-terminal-docs/specifications/performance-budget-rfc.md#budgets`.
+//! Evidence: `bitty-terminal-docs/product/perf-evidence.md` (CTX-0100, real measurements from `c0aadd2+`).
+//!
+//! Reference convention: budget and evidence paths name the canonical
+//! `bitty-terminal-docs` corpus and the upstream `bitty` product workspace.
+//! Both are reference-only here — this repository carries no docs mount and
+//! no product checkout; the suite pins `bitty@9bc73207` (see `Cargo.toml`)
+//! and vendors its corpora under `fixtures/`.
 
 #![forbid(unsafe_code)]
 
@@ -115,7 +121,8 @@ pub const PB6_THROUGHPUT_MB_S: u64 = 40;
 /// PB-7 idle CPU — ≤ 1 % average over 10 min, zero wakeups when idle.
 pub const PB7_IDLE_CPU_PCT: u64 = 1;
 
-/// Correlated bounds reused across benches and `tools/perf/*`.
+/// Correlated bounds reused across benches and upstream `bitty`
+/// `tools/perf/*` (reference-only).
 pub const MAX_CORPUS_BYTES: usize = 8 * 1024;
 /// Correlated actions bound.
 pub const MAX_ACTIONS: usize = 4096;

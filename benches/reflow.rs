@@ -1,10 +1,10 @@
 //! Reflow / resize baseline — PB-3 reclaim + PB-4 latency shaping.
 //!
 //! Headless, bounded, `#![forbid(unsafe_code)]` harness for
-//! `docs/specifications/performance-budget-rfc.md`:
+//! `bitty-terminal-docs/specifications/performance-budget-rfc.md`:
 //! - PB-3 typical-session memory and growth: ≤ 250 MB 8-tab 4 h + reclaim 15%
 //!   (this bench isolates the reflow cost that underlies that budget;
-//!   real RSS comes from `tools/perf/rss`).
+//!   real RSS comes from upstream `bitty` `tools/perf/rss`, reference-only).
 //! - PB-4 input latency headroom: `State::resize` must stay bounded so
 //!   it never spills into the key-to-screen hot path tail.
 //!
@@ -14,7 +14,7 @@
 //! tab lattice, scrollback `resize(cols)`), `forbid(unsafe)`, deterministic
 //! via pure `State` transitions and `state_hash` reuse.
 //!
-//! Budget reference: `docs/specifications/performance-budget-rfc.md#pb-3`.
+//! Budget reference: `bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-3`.
 //!
 //! Run headlessly:
 //! ```text

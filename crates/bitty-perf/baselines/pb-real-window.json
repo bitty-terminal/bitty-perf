@@ -6,7 +6,7 @@
   "revision": "6fd9d4d1f399565cc07ea228e5f43335d0cb52f5",
   "command": "just perf-real-window-baseline",
   "profile": "bench (release)",
-  "budget_ref": "docs/specifications/performance-budget-rfc.md#pb-1-cold-startup-time and #pb-2-idle-memory",
+  "budget_ref": "bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-1-cold-startup-time and #pb-2-idle-memory",
   "host_context": {
     "os": "linux",
     "arch": "x86_64",

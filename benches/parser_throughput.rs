@@ -15,7 +15,7 @@
 //! bounded (`MAX_CHUNK_BYTES` 8 KiB, `MAX_SEGMENT_BYTES` 64 KiB,
 //! `MAX_ACTIONS` 4096), deterministic corpora.
 //!
-//! Budget reference: `docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor`.
+//! Budget reference: `bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor`.
 //! Evidence: `crates/bitty-perf/baselines/README.md` (repo-owned runbook).
 //!
 //! Run headlessly:
@@ -127,7 +127,8 @@ fn meta_from_env(report: &bitty_perf::parser_throughput::ParserThroughputReport)
         toolchain: env("BITTY_PERF_TOOLCHAIN", "unspecified-toolchain"),
         os: env("BITTY_PERF_OS", "unspecified-os"),
         machine_class: env("BITTY_PERF_MACHINE_CLASS", "unspecified-machine-class"),
-        budget_ref: "docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor"
-            .to_string(),
+        budget_ref:
+            "bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor"
+                .to_string(),
     }
 }

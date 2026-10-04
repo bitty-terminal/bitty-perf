@@ -6,7 +6,7 @@
   "revision": "c9680cbfdf9ef560d4033747f4af991f0ce45751",
   "command": "BITTY_PERF_REAL_WINDOW=1 BITTY_PERF_STARTUP_SAMPLES=10 BITTY_PERF_IDLE_SECS=60 cargo bench -p bitty-perf --bench real_window -- --nocapture",
   "profile": "bench (release)",
-  "budget_ref": "docs/specifications/performance-budget-rfc.md#pb-1-cold-startup-time and #pb-2-idle-memory",
+  "budget_ref": "bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-1-cold-startup-time and #pb-2-idle-memory",
   "host_context": {
     "os": "linux",
     "arch": "x86_64",

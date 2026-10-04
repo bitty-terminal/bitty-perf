@@ -176,7 +176,7 @@ decision to turn it into a hard gate). The CTX-0592 harness, bench, and
 
 ## References
 
-- `docs/specifications/performance-budget-rfc.md#pb-2-idle-memory`
+- `bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-2-idle-memory`
 - `crates/bitty-perf/baselines/pb-rss.json` (committed artifact, this wave)
 - `crates/bitty-perf/baselines/real-window-evidence.md` (CTX-0592 harness)
 - `crates/bitty-perf/baselines/pb-real-window.json` (CTX-0592 artifact)

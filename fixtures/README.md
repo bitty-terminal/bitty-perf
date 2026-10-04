@@ -22,5 +22,14 @@ against these exact bytes; silently divergent fixtures would void the
 regression gate, so any fixture change requires re-measuring the baseline
 with provenance (see `crates/bitty-perf/baselines/README.md`).
 
+Reference-only vendored helpers: `compat/harness.rs` and the `compat/`
+`README.md` files are uncompiled upstream reference copies, not suite
+sources — no manifest builds them and no test executes them. Their
+`tests/compat/...` and `crates/bitty-vt/...` paths are
+product-workspace-relative at the pinned revision above, not paths in this
+repository; the corpora the suite actually reads live at
+`fixtures/compat/<category>/corpus/`. Keep these files byte-identical to
+upstream; document drift here, never by editing them in place.
+
 No host paths, usernames, or absolute checkout locations may appear in this
 directory. Provenance lives in this file, not in the fixture bytes.

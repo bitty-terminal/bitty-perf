@@ -6,7 +6,7 @@
   "revision": "d599640dc7b5d27c47759240ff6da6b08dae81fb",
   "command": "bash scripts/dogfood-session.sh --out-dir recording/dogfood-session --duration-secs 14400 --cycle-secs 600",
   "profile": "dev (debug)",
-  "budget_ref": "docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory and #pb-7-idle-cpu",
+  "budget_ref": "bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory and #pb-7-idle-cpu",
   "host_context": {
     "os": "linux",
     "arch": "x86_64",

@@ -31,7 +31,7 @@
 //! `wgpu::Surface`).
 //!
 //! Budget reference:
-//! `docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor`.
+//! `bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor`.
 //! Runbook: `crates/bitty-perf/baselines/throughput-floor-evidence.md`.
 
 #![forbid(unsafe_code)]
@@ -343,7 +343,7 @@ pub fn baseline_json(report: &ThroughputFloorReport, meta: &BaselineMeta) -> Str
     out.push_str(&format!("  \"command\": \"{}\",\n", escape(&meta.command)));
     out.push_str(&format!("  \"profile\": \"{}\",\n", escape(&meta.profile)));
     out.push_str(
-        "  \"budget_ref\": \"docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor\",\n",
+        "  \"budget_ref\": \"bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor\",\n",
     );
     out.push_str("  \"host_context\": {\n");
     out.push_str(&format!("    \"os\": \"{}\",\n", escape(&host.os)));

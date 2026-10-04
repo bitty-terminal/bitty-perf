@@ -6,7 +6,7 @@
   "revision": "b0b1155aec54b127503d049a5df61f84cd24d9b8",
   "command": "bash scripts/real-render-soak.sh --out-dir recording/real-soak --duration-secs 14400 --interval-secs 300",
   "profile": "dev (debug)",
-  "budget_ref": "docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory and #pb-7-idle-cpu",
+  "budget_ref": "bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory and #pb-7-idle-cpu",
   "host_context": {
     "os": "linux",
     "arch": "x86_64",

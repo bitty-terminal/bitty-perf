@@ -8,7 +8,7 @@
 //! commits the artifact and refuses when the measurement failed (exit 2).
 //!
 //! Budget reference:
-//! `docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor`.
+//! `bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor`.
 //! Runbook: `crates/bitty-perf/baselines/throughput-floor-evidence.md`.
 //!
 //! ```text
@@ -39,7 +39,7 @@ fn main() {
         "throughput_floor — PB-6 sustained parse-and-render (CTX-0676, fixed synthetic corpus)"
     );
     println!(
-        "budget: docs/specifications/performance-budget-rfc.md#pb-6 (≥{} MiB/s sustained parse-and-render single core)",
+        "budget: bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-6 (≥{} MiB/s sustained parse-and-render single core)",
         bitty_perf::PB6_THROUGHPUT_MB_S,
     );
 

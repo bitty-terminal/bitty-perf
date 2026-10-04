@@ -61,6 +61,7 @@ check:
     just rust-fmt
     just rust-clippy
     just rust-test
+    just supply-chain
 
 workflows:
     actionlint
@@ -83,6 +84,23 @@ rust-test:
 
 rust-typecheck:
     cargo check --workspace --all-targets --locked
+
+# Local supply-chain gate mirroring the CI `Supply chain (deny/audit)` job:
+# `cargo deny check` (advisories, bans, licenses, sources per deny.toml) plus
+# `cargo audit` with the same two advisory ignores. Audit uses a fresh
+# advisory-db checkout so the shared cache that `cargo deny` populates is
+# left untouched.
+supply-chain:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo '==> cargo deny check'
+    cargo deny check
+    echo '==> cargo audit'
+    tmpdb="$(mktemp -d)"
+    trap 'rm -rf "$tmpdb"' EXIT INT TERM
+    cargo audit --db "$tmpdb" --ignore RUSTSEC-2024-0436 --ignore RUSTSEC-2026-0192
+    trap - EXIT INT TERM
+    rm -rf "$tmpdb"
 
 # Publish a redacted CarryCtx snapshot to refs/heads/carryctx-snapshots.
 workflow-publish:

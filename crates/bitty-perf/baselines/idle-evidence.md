@@ -32,10 +32,10 @@ sidebar_order: 53
   counters are absent; and bounded CI contract tests (pure parser/serializer
   math only — CI never parks a 60 s window). It changes no accepted budget or
   gate threshold.
-- Authority: canonical budgets live in the `bitty-terminal-docs` submodule
-  (`docs/specifications/performance-budget-rfc.md`); the product-level
-  `docs/product/perf-evidence.md` and `docs/product/perf-baseline.md` rows are
-  reconciled through this repository-local record, because the submodule is
+- Authority: canonical budgets live in the `bitty-terminal-docs` corpus (reference-only; no docs mount in this repository)
+  (`bitty-terminal-docs/specifications/performance-budget-rfc.md`); the product-level
+  `bitty-terminal-docs/product/perf-evidence.md` and `bitty-terminal-docs/product/perf-baseline.md` rows are
+  reconciled through this repository-local record, because the corpus is
   external content owned by another repository.
 
 ## What this wave adds
@@ -49,7 +49,7 @@ Before this task the repository had:
   after the busy bench loop — sampling noise, not product CPU).
 - `benches/idle_real.rs` — asserted the invariant and cost headroom but
   committed no idle-CPU/wakeup numbers.
-- `tools/perf/idle` — a bash proxy that sampled an unrelated `sleep` child.
+- Upstream `bitty` `tools/perf/idle` (reference-only) — a bash proxy that sampled an unrelated `sleep` child.
 
 After this task:
 
@@ -245,8 +245,8 @@ Expected: unit tests pass with no display; the 5 s smoke prints
 
 ## Reconciliation with the product docs
 
-The canonical product rows live in the `bitty-terminal-docs` submodule
-(`docs/product/perf-evidence.md` and `docs/product/perf-baseline.md`). This
+The canonical product rows live in the `bitty-terminal-docs` corpus (reference-only; no docs mount in this repository)
+(`bitty-terminal-docs/product/perf-evidence.md` and `bitty-terminal-docs/product/perf-baseline.md`). This
 repository cannot edit that external content in this change; the
 reconciliation is: this document plus
 `crates/bitty-perf/baselines/pb-idle.json` are the repository-local PB-7
@@ -261,7 +261,7 @@ decision to turn them into hard gates).
 
 ## References
 
-- `docs/specifications/performance-budget-rfc.md#pb-7-idle-resource-usage`
+- `bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-7-idle-resource-usage`
 - `crates/bitty-perf/baselines/pb-idle.json` (committed artifact)
 - `crates/bitty-perf/src/idle.rs` (harness)
 - `benches/idle_real.rs` (human-facing bench)

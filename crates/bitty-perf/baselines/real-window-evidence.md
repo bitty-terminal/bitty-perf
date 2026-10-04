@@ -30,11 +30,11 @@ sidebar_order: 52
   on a Tier 1 host; a committed evidence artifact with numbers plus host
   context; an explicit `Unavailable` result on headless CI; and bounded CI
   contract tests. It changes no accepted budget or gate threshold.
-- Authority: canonical budgets live in the `bitty-terminal-docs` submodule
-  (`docs/specifications/performance-budget-rfc.md`); the product-level
-  `docs/product/perf-evidence.md` and `docs/product/perf-baseline.md` rows are
+- Authority: canonical budgets live in the `bitty-terminal-docs` corpus (reference-only; no docs mount in this repository)
+  (`bitty-terminal-docs/specifications/performance-budget-rfc.md`); the product-level
+  `bitty-terminal-docs/product/perf-evidence.md` and `bitty-terminal-docs/product/perf-baseline.md` rows are
   reconciled through this repository-local record plus the PR notes below,
-  because the submodule is external content owned by another repository.
+  because the corpus is external content owned by another repository.
 
 ## What this wave adds
 
@@ -44,7 +44,7 @@ Before this task the repository had:
   `StartupDistribution`, but `measure_real_window_startup` only validated
   `WindowConfig`/`EventLoop` and never measured a real first frame, never
   aggregated p50/p99 over launches, and committed no PB-1 baseline.
-- `tools/perf/rss` — a bash proxy that sampled `cargo run --help` and the
+- Upstream `bitty` `tools/perf/rss` (reference-only) — a bash proxy that sampled `cargo run --help` and the
   shell, with soft verdicts; no in-crate PB-2 measurement.
 
 After this task:
@@ -180,8 +180,8 @@ contract test passes with no display.
 
 ## Reconciliation with the product docs
 
-The canonical product rows live in the `bitty-terminal-docs` submodule
-(`docs/product/perf-evidence.md` CTX-0100 and `docs/product/perf-baseline.md`
+The canonical product rows live in the `bitty-terminal-docs` corpus (reference-only; no docs mount in this repository)
+(`bitty-terminal-docs/product/perf-evidence.md` CTX-0100 and `bitty-terminal-docs/product/perf-baseline.md`
 CTX-0076). This repository cannot edit that external content in this PR; the
 reconciliation is: this document plus
 `crates/bitty-perf/baselines/pb-real-window.json` are the repository-local
@@ -197,8 +197,8 @@ decision to turn them into hard gates).
 
 ## References
 
-- `docs/specifications/performance-budget-rfc.md#pb-1-cold-startup-time`
-- `docs/specifications/performance-budget-rfc.md#pb-2-idle-memory`
+- `bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-1-cold-startup-time`
+- `bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-2-idle-memory`
 - `crates/bitty-perf/baselines/pb-real-window.json` (committed artifact)
 - `crates/bitty-perf/baselines/README.md` (parser-throughput runbook sibling)
 - `crates/bitty-perf/src/real_window.rs` (harness)

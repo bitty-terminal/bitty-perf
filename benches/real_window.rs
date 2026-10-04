@@ -13,7 +13,7 @@
 //! `#![forbid(unsafe_code)]`; headless-CI-safe (no display required).
 //!
 //! Budget reference:
-//! `docs/specifications/performance-budget-rfc.md#pb-1-cold-startup-time` and
+//! `bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-1-cold-startup-time` and
 //! `#pb-2-idle-memory`. Runbook:
 //! `crates/bitty-perf/baselines/real-window-evidence.md`.
 //!

@@ -8,7 +8,7 @@
 //! baseline number plus a generous regression threshold against plain-text
 //! throughput.
 //!
-//! Budget reference: `docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor`
+//! Budget reference: `bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor`
 //! (PB-6, ≥ 40 MB/s sustained parse-and-render on a Tier 1 reference machine).
 //! The committed baseline is evidence, not a new budget: PB-6 remains an
 //! architecture constraint until the RFC's reference hardware open item
@@ -61,7 +61,7 @@ pub const CI_SAMPLE_BYTES: usize = 512 * 1024;
 /// Measured rounds per corpus in the bounded CI regression check.
 pub const CI_ROUNDS: usize = 3;
 
-/// Maximum corpora concatenated from `tests/compat/*/corpus/`.
+/// Maximum corpora concatenated from `fixtures/compat/*/corpus/`.
 pub const MAX_COMPAT_CORPORA: usize = 96;
 
 /// Generous regression factor: a measured mixed/plain throughput ratio below
@@ -98,7 +98,7 @@ pub const CORPUS_SPECS: &[CorpusSpec] = &[
     },
     CorpusSpec {
         id: "compat_corpus",
-        description: "tests/compat/*/corpus M1 surface corpora (modes, color, osc, mouse, tui)",
+        description: "fixtures/compat/*/corpus M1 surface corpora (modes, color, osc, mouse, tui)",
     },
     CorpusSpec {
         id: "escape_storm",
@@ -661,7 +661,7 @@ fn read_sorted_dir(dir: &Path, max: usize) -> Result<Vec<(PathBuf, Vec<u8>)>, St
     Ok(out)
 }
 
-/// Concatenate every `tests/compat/<category>/corpus/*.bin` in lexical order,
+/// Concatenate every `fixtures/compat/<category>/corpus/*.bin` in lexical order,
 /// bounded to [`MAX_COMPAT_CORPORA`] files and [`MAX_CHUNK_BYTES`] per file.
 fn read_compat_corpora(root: &Path) -> Result<Vec<(PathBuf, Vec<u8>)>, String> {
     let mut categories = Vec::new();

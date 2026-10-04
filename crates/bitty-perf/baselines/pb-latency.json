@@ -6,7 +6,7 @@
   "revision": "13d555649b47e07bf56a0d467ffb5332b3f86396",
   "command": "cargo bench -p bitty-perf --bench latency_real -- --nocapture --write-baseline crates/bitty-perf/baselines/pb-latency.json",
   "profile": "bench (release)",
-  "budget_ref": "docs/specifications/performance-budget-rfc.md#pb-4-input-latency",
+  "budget_ref": "bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-4-input-latency",
   "host_context": {
     "os": "linux",
     "arch": "x86_64",

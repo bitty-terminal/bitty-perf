@@ -33,8 +33,8 @@ sidebar_order: 53
   headless-safe planner bench; a committed evidence shape with an honest
   initial `unavailable` record; and bounded CI contract tests. It changes no
   accepted budget or gate threshold.
-- Authority: canonical budgets live in the `bitty-terminal-docs` submodule
-  (`docs/specifications/performance-budget-rfc.md`); this file is
+- Authority: canonical budgets live in the `bitty-terminal-docs` corpus (reference-only; no docs mount in this repository)
+  (`bitty-terminal-docs/specifications/performance-budget-rfc.md`); this file is
   repository-local evidence and automation, in the same posture as
   `real-window-evidence.md` (CTX-0592).
 
@@ -214,7 +214,7 @@ contract tests pass with no display.
 
 ## Reconciliation with the product docs
 
-The canonical product rows live in the `bitty-terminal-docs` submodule.
+The canonical product rows live in the `bitty-terminal-docs` corpus (reference-only; no docs mount in this repository).
 This repository cannot edit that external content here; the reconciliation
 is: this document plus `crates/bitty-perf/baselines/pb-real-soak.json` are
 the repository-local PERF-09 automation record, and a follow-up in the docs
@@ -231,7 +231,7 @@ points at this chain as the automated real-render half.
 
 ## References
 
-- `docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory`
+- `bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory`
   and `#pb-7-idle-cpu`
 - `crates/bitty-perf/baselines/real-window-evidence.md` (CTX-0592 posture
   this chain reuses: opt-in, `Unavailable` on CI, no fabricated numbers)

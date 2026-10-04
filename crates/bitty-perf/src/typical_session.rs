@@ -28,7 +28,7 @@
 //! `Unavailable` elsewhere.
 //!
 //! Budget reference:
-//! `docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory`.
+//! `bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory`.
 //! Runbook: `crates/bitty-perf/baselines/typical-session-evidence.md`.
 
 #![forbid(unsafe_code)]
@@ -344,7 +344,7 @@ pub fn baseline_json(report: &TypicalSessionReport, meta: &BaselineMeta) -> Resu
     out.push_str(&format!("  \"command\": \"{}\",\n", escape(&meta.command)));
     out.push_str(&format!("  \"profile\": \"{}\",\n", escape(&meta.profile)));
     out.push_str(
-        "  \"budget_ref\": \"docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory\",\n",
+        "  \"budget_ref\": \"bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory\",\n",
     );
     out.push_str("  \"host_context\": {\n");
     out.push_str(&format!("    \"os\": \"{}\",\n", escape(&host.os)));

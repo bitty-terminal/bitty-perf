@@ -7,7 +7,7 @@
 //! fabricated numbers).
 //!
 //! Budget reference:
-//! `docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory`.
+//! `bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory`.
 //! Runbook: `crates/bitty-perf/baselines/typical-session-evidence.md`.
 //!
 //! ```text
@@ -38,7 +38,7 @@ fn main() {
         "typical_session — PB-3 typical-session memory + growth (CTX-0676, bounded synthetic)"
     );
     println!(
-        "budget: docs/specifications/performance-budget-rfc.md#pb-3 ({} MB 8 tabs; reclaim within {}% after close)",
+        "budget: bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-3 ({} MB 8 tabs; reclaim within {}% after close)",
         bitty_perf::PB3_TYPICAL_RSS_MB,
         bitty_perf::PB3_RECLAIM_PCT,
     );

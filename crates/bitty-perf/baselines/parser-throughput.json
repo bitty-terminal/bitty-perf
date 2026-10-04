@@ -10,7 +10,7 @@
   "toolchain": "rustc 1.98.1 (rust-toolchain.toml)",
   "os": "CachyOS Linux (Arch derivative), kernel 7.2.3-1-cachyos, x86_64",
   "machine_class": "desktop x86_64 24-core hybrid P/E (Intel i7-14650HX class), 31 GiB RAM, NVMe",
-  "budget_ref": "docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor",
+  "budget_ref": "bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor",
   "bounds": {
     "MAX_CHUNK_BYTES": 8192,
     "MAX_SEGMENT_BYTES": 65536,
@@ -39,7 +39,7 @@
     },
     {
       "id": "compat_corpus",
-      "description": "tests/compat/*/corpus M1 surface corpora (modes, color, osc, mouse, tui)",
+      "description": "fixtures/compat/*/corpus M1 surface corpora (modes, color, osc, mouse, tui)",
       "bytes": 4194304,
       "actions": 1679872,
       "mb_s": 120.62,

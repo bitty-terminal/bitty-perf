@@ -676,7 +676,7 @@ pub fn baseline_json(report: &LatencyReport, meta: &BaselineMeta) -> Result<Stri
     out.push_str(&format!("  \"command\": \"{}\",\n", escape(&meta.command)));
     out.push_str(&format!("  \"profile\": \"{}\",\n", escape(&meta.profile)));
     out.push_str(
-        "  \"budget_ref\": \"docs/specifications/performance-budget-rfc.md#pb-4-input-latency\",\n",
+        "  \"budget_ref\": \"bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-4-input-latency\",\n",
     );
     out.push_str("  \"host_context\": {\n");
     out.push_str(&format!("    \"os\": \"{}\",\n", escape(&host.os)));

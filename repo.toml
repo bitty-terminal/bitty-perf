@@ -2,7 +2,7 @@
 name = "bitty-perf"
 kind = "tooling"
 lang = "rust"
-role = "candidate external performance suite; metadata-only scaffold"
+role = "external performance validation suite; migrated from bitty workspace (CTX-0003 PR #7, pending acceptance)"
 owner = "bitty-core"
 docs = "bitty-terminal-docs"
 
@@ -10,7 +10,7 @@ docs = "bitty-terminal-docs"
 version = "0.0.1"
 edition = "2024"
 rust_version = "1.85"
-status = "metadata-only"
+status = "migrated-suite; pending CTX-0003 acceptance"
 
 [contracts]
-status = "pending W-75; no migrated suite"
+status = "W-75 accepted; suite migrated at bitty@9bc73207; pending CTX-0003 acceptance and CTX-0004 verification"

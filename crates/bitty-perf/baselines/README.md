@@ -34,8 +34,8 @@ sidebar_order: 51
   document records a **measurement of the parser stage only**, not budget
   compliance: PB-6 covers parse-and-render on the slowest Tier 1 reference
   machine, and the RFC's reference-hardware open item is still open. The
-  canonical budgets live in the `bitty-terminal-docs` submodule
-  (`docs/specifications/`); this file is repository-local evidence.
+  canonical budgets live in the `bitty-terminal-docs` corpus (reference-only; no docs mount in this repository)
+  (`bitty-terminal-docs/specifications/`); this file is repository-local evidence.
 
 ## What M1-11 requires
 
@@ -69,12 +69,12 @@ no CI check. This task adds all four.
 
 ### Corpora (reused, deterministic, bounded)
 
-| Corpus          | Source                                                                          |
-| --------------- | ------------------------------------------------------------------------------- |
-| `plain_text`    | `crates/bitty-vt/seeds/01-plain-text.bin` — the plain-text reference            |
-| `mixed_seeds`   | all `crates/bitty-vt/seeds/*.bin` — SGR, cursor, DECSET, OSC, DCS, malformed    |
-| `compat_corpus` | all `tests/compat/*/corpus/*.bin` — M1 surfaces (modes, color, osc, mouse, tui) |
-| `escape_storm`  | synthetic heavy escape density (SGR/DECSET/OSC/DCS/cursor) worst case           |
+| Corpus          | Source                                                                             |
+| --------------- | ---------------------------------------------------------------------------------- |
+| `plain_text`    | `fixtures/bitty-vt-seeds/01-plain-text.bin` — the plain-text reference             |
+| `mixed_seeds`   | all `fixtures/bitty-vt-seeds/*.bin` — SGR, cursor, DECSET, OSC, DCS, malformed     |
+| `compat_corpus` | all `fixtures/compat/*/corpus/*.bin` — M1 surfaces (modes, color, osc, mouse, tui) |
+| `escape_storm`  | synthetic heavy escape density (SGR/DECSET/OSC/DCS/cursor) worst case              |
 
 Each corpus segment is repeated to `MAX_SEGMENT_BYTES` (64 KiB) and the
 measurement repeats that segment to `sample_bytes`. Parsing runs through a
@@ -181,9 +181,9 @@ repository-local measurement evidence; the accepted performance budget RFC in
 
 ## References
 
-- `docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor`
-  (`bitty-terminal-docs` submodule mount)
-- `docs/specifications/compatibility-milestone-rfc.md` ("Performance
-  guardrail" acceptance evidence row; submodule mount)
-- `docs/product/perf-baseline.md` (Phase F harness map)
+- `bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor`
+  (`bitty-terminal-docs` corpus, reference-only)
+- `bitty-terminal-docs/specifications/compatibility-milestone-rfc.md` ("Performance
+  guardrail" acceptance evidence row; corpus reference, no local mount)
+- `bitty-terminal-docs/product/perf-baseline.md` (Phase F harness map)
 - `crates/bitty-perf/baselines/parser-throughput.json`

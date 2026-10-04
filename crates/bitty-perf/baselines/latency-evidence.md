@@ -33,10 +33,10 @@ sidebar_order: 56
   no sample presents (exit 2, no fabricated numbers); and bounded CI contract
   tests (exact boundary math + provenance only). It changes no accepted
   budget or gate threshold.
-- Authority: canonical budgets live in the `bitty-terminal-docs` submodule
-  (`docs/specifications/performance-budget-rfc.md`); the product-level
-  `docs/product/perf-evidence.md` and `docs/product/perf-baseline.md` rows are
-  reconciled through this repository-local record, because the submodule is
+- Authority: canonical budgets live in the `bitty-terminal-docs` corpus (reference-only; no docs mount in this repository)
+  (`bitty-terminal-docs/specifications/performance-budget-rfc.md`); the product-level
+  `bitty-terminal-docs/product/perf-evidence.md` and `bitty-terminal-docs/product/perf-baseline.md` rows are
+  reconciled through this repository-local record, because the corpus is
   external content owned by another repository.
 
 ## What this wave adds
@@ -163,8 +163,8 @@ Expected: unit + contract tests pass with no display; the bench prints
 
 ## Reconciliation with the product docs
 
-The canonical product rows live in the `bitty-terminal-docs` submodule
-(`docs/product/perf-evidence.md` and `docs/product/perf-baseline.md`). This
+The canonical product rows live in the `bitty-terminal-docs` corpus (reference-only; no docs mount in this repository)
+(`bitty-terminal-docs/product/perf-evidence.md` and `bitty-terminal-docs/product/perf-baseline.md`). This
 repository cannot edit that external content in this change; the
 reconciliation is: this document plus
 `crates/bitty-perf/baselines/pb-latency.json` are the repository-local PB-4
@@ -181,7 +181,7 @@ protocol this finding calls for).
 
 ## References
 
-- `docs/specifications/performance-budget-rfc.md#pb-4-input-latency`
+- `bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-4-input-latency`
 - `crates/bitty-perf/baselines/pb-latency.json` (committed artifact)
 - `crates/bitty-perf/src/latency.rs` (harness)
 - `benches/latency_real.rs` (human-facing bench)

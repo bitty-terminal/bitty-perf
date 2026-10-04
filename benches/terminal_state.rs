@@ -1,7 +1,7 @@
 //! Terminal state transition baseline — PB-4 latency / PB-6 throughput split.
 //!
 //! Headless, bounded, `#![forbid(unsafe_code)]` harness for
-//! `docs/specifications/performance-budget-rfc.md`:
+//! `bitty-terminal-docs/specifications/performance-budget-rfc.md`:
 //! - PB-4 input latency ≤ 8 ms p50 / ≤ 15 ms p99 (key-to-screen, Wayland 60 Hz)
 //! - PB-6 contributes here as parse-and-apply together ≥ 40 MB/s
 //!
@@ -13,7 +13,7 @@
 //! and `forbid(unsafe)`. Determinism follows `bitty-term-state` crate docs
 //! (pure function of `(initial state, action sequence)` + `State::state_hash`).
 //!
-//! Budget reference: `docs/specifications/performance-budget-rfc.md#pb-4-input-latency`.
+//! Budget reference: `bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-4-input-latency`.
 //!
 //! Run headlessly:
 //! ```text
@@ -78,10 +78,10 @@ fn main() {
     // under 8 ms; plugins will be measured separately under isolation RFC.
     let iters_small = invocation.workload(5_000, 1);
     let mean_us = bench_apply(&actions, iters_small);
-    // Rough p50 gate: mean per batch; real p50/p99 comes from `tools/perf/latency`
-    // which samples keystroke→photon. Here we just note the bound.
+    // Rough p50 gate: mean per batch; real p50/p99 comes from upstream `bitty`
+    // `tools/perf/latency` (reference-only), which samples keystroke→photon. Here we just note the bound.
     println!(
-        "terminal_state — PB-4 input latency budget ≤ 8 ms p50 / 15 ms p99 (headless apply; real key→screen in tools/perf/latency)"
+        "terminal_state — PB-4 input latency budget ≤ 8 ms p50 / 15 ms p99 (headless apply; real key→screen in upstream bitty tools/perf/latency, reference-only)"
     );
     println!(
         "  corpus: {} bytes → {} actions",

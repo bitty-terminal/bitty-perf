@@ -14,7 +14,7 @@
 //! UX budgets under `reflow`/`search`.
 //!
 //! Budget reference: search bounds mirror PB-2/PB-3 memory philosophy
-//! (`docs/specifications/performance-budget-rfc.md#pb-2`)
+//! (`bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-2`)
 //! and `crates/bitty-term-state/src/search.rs` docs.
 //!
 //! Run headlessly:

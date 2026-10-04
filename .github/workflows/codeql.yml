@@ -1,11 +1,8 @@
 name: CodeQL
 
-# Actions analysis runs now. A primary-language (Rust) analysable target does
-# not exist yet, so that job is gated on the repository variable
-# ENABLE_RUST_CODEQL: leave it unset while the scaffold has no source (the job
-# is skipped, never faked), and set it to "true" once Cargo.toml and source
-# land. Lua has no CodeQL language; plugin repositories rely on their Lua
-# conformance gates instead.
+# Actions and Rust analyses both run: the migrated suite (CTX-0003) ships
+# Cargo.toml plus crate source, so the Rust job is unconditional — the
+# scaffold-era `vars.ENABLE_RUST_CODEQL` gate is retired rather than faked.
 
 on:
   push:
@@ -44,13 +41,12 @@ jobs:
           category: "/language:actions"
 
   analyze-primary:
-    name: Analyze (Rust, gated on source)
+    name: Analyze (Rust)
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
       contents: read
       security-events: write
-    if: ${{ vars.ENABLE_RUST_CODEQL == 'true' }}
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

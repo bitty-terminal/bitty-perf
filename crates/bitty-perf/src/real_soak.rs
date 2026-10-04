@@ -40,7 +40,7 @@
 //! degrades to `Unavailable` on other platforms.
 //!
 //! Budget reference:
-//! `docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory`
+//! `bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory`
 //! (250 MB) and `#pb-7-idle-cpu`. Runbook:
 //! `crates/bitty-perf/baselines/real-soak-evidence.md`. Automation script:
 //! `scripts/real-render-soak.sh`.
@@ -472,7 +472,7 @@ pub fn schedule_json(config: &SoakConfig, plan: &CapturePlan, meta: &BaselineMet
     out.push_str(&format!("  \"command\": \"{}\",\n", escape(&meta.command)));
     out.push_str(&format!("  \"profile\": \"{}\",\n", escape(&meta.profile)));
     out.push_str(
-        "  \"budget_ref\": \"docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory and #pb-7-idle-cpu\",\n",
+        "  \"budget_ref\": \"bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory and #pb-7-idle-cpu\",\n",
     );
     out.push_str("  \"host_context\": {\n");
     out.push_str(&format!("    \"os\": \"{}\",\n", escape(&host.os)));
@@ -539,7 +539,7 @@ pub fn evidence_json(
     out.push_str(&format!("  \"command\": \"{}\",\n", escape(&meta.command)));
     out.push_str(&format!("  \"profile\": \"{}\",\n", escape(&meta.profile)));
     out.push_str(
-        "  \"budget_ref\": \"docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory and #pb-7-idle-cpu\",\n",
+        "  \"budget_ref\": \"bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory and #pb-7-idle-cpu\",\n",
     );
     out.push_str("  \"host_context\": {\n");
     out.push_str(&format!("    \"os\": \"{}\",\n", escape(&host.os)));

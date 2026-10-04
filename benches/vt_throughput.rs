@@ -1,7 +1,7 @@
 //! VT parser throughput baseline — PB-6 throughput floor.
 //!
 //! Headless, bounded, `#![forbid(unsafe_code)]` harness for
-//! `docs/specifications/performance-budget-rfc.md` PB-6:
+//! `bitty-terminal-docs/specifications/performance-budget-rfc.md` PB-6:
 //! ≥ 40 MB/s sustained VT parse-and-render on single core of slowest
 //! Tier 1 reference machine, fixed synthetic corpus.
 //!
@@ -12,9 +12,10 @@
 //! the synthetic corpus is a repeatable byte pattern, chunking invariance
 //! is asserted once per corpus.
 //!
-//! Budget reference: `docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor`.
-//! Tooling entry: `tools/perf/latency` for PB-4 and `tools/perf/startup` for PB-1
-//! are separate; this bench covers PB-6 only.
+//! Budget reference: `bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor`.
+//! Tooling entry: upstream `bitty` `tools/perf/latency` for PB-4 and
+//! `tools/perf/startup` for PB-1 (both reference-only) are separate;
+//! this bench covers PB-6 only.
 //!
 //! Run headlessly:
 //! ```text
@@ -30,7 +31,7 @@ use std::time::Instant;
 use bitty_vt::Parser;
 
 /// Maximum corpus bytes per file — 8 KiB, matching `bitty-pty::READ_CHUNK_SIZE`.
-/// Matches `tests/compat/harness.rs::MAX_CORPUS_BYTES`.
+/// Matches `fixtures/compat/harness.rs::MAX_CORPUS_BYTES` (reference-only vendored copy).
 const MAX_CORPUS_BYTES: usize = 8 * 1024;
 
 /// Bound on decoded actions per corpus — matches harness `MAX_ACTIONS`.

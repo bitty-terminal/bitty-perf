@@ -67,6 +67,50 @@ jobs:
       - run: just rust-fmt
       - run: just rust-clippy
       - run: just rust-test
+  supply-chain:
+    name: Supply chain (deny/audit)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # The pinned channel lives in rust-toolchain.toml; resolve it instead of
+      # repeating the literal so the workflow tracks the file.
+      - name: Resolve Rust channel (rust-toolchain.toml)
+        id: rust-channel
+        run: |
+          channel="$(sed -n 's/^channel = "\(.*\)"$/\1/p' rust-toolchain.toml)"
+          echo "channel=$channel" >> "$GITHUB_OUTPUT"
+      - name: Install pinned Rust toolchain
+        uses: dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de # v1
+        with:
+          toolchain: ${{ steps.rust-channel.outputs.channel }}
+      - name: Install cargo-deny
+        uses: taiki-e/install-action@4cef1412cce204788f482e778a0b9187f9626a29 # v2.87.21
+        with:
+          tool: cargo-deny@0.20.2
+      - name: Install cargo-audit
+        uses: taiki-e/install-action@4cef1412cce204788f482e778a0b9187f9626a29 # v2.87.21
+        with:
+          tool: cargo-audit@0.22.2
+      # deny.toml allowlists the exact-rev git pins (bitty production revision
+      # plus transitive bitty-ipc/bitty-network) per W-105 pin discipline; any
+      # new git source fails loudly here.
+      - name: Check dependencies (licenses, bans, sources)
+        run: cargo deny check
+      # Duplicated transitive versions are expected from
+      # winit/crossfont/arboard/portable-pty via the pinned bitty revision and
+      # must not be force-unified. `cargo tree --duplicates` exits 0; this step
+      # prints the resolved duplicates for PR visibility and never fails.
+      - name: Observe duplicate dependency versions (informational)
+        run: cargo tree --workspace --duplicates --locked
+      # Unmaintained advisories for ttf-parser/paste are tracked via deny.toml
+      # and ignored for audit until the upstream replacement lands (inherited
+      # from the pinned bitty revision).
+      # cargo-deny and cargo-audit share ~/.cargo/advisory-db; deny populates it
+      # so clear before audit to avoid "Refusing to initialize non-empty directory" failure.
+      - name: Audit advisories
+        run: rm -rf ~/.cargo/advisory-db && cargo audit --ignore RUSTSEC-2024-0436 --ignore RUSTSEC-2026-0192
   actionlint:
     name: Lint GitHub Actions workflows
     runs-on: ubuntu-latest

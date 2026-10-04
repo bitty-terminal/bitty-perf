@@ -6,7 +6,7 @@
   "revision": "c70b9f2b00facc4d848ce3f38df1f47a95a423fe",
   "command": "cargo bench -p bitty-perf --bench typical_session -- --nocapture --write-baseline crates/bitty-perf/baselines/pb-typical-session.json",
   "profile": "bench (release)",
-  "budget_ref": "docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory",
+  "budget_ref": "bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-3-typical-session-memory",
   "host_context": {
     "os": "linux",
     "arch": "x86_64",

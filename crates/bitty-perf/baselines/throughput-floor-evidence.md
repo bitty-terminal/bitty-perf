@@ -32,10 +32,10 @@ sidebar_order: 55
   artifact with numbers plus host context; and bounded CI contract tests
   (pure math + provenance + a 64 KiB headless smoke). It changes no accepted
   budget or gate threshold.
-- Authority: canonical budgets live in the `bitty-terminal-docs` submodule
-  (`docs/specifications/performance-budget-rfc.md`); the product-level
-  `docs/product/perf-evidence.md` and `docs/product/perf-baseline.md` rows are
-  reconciled through this repository-local record, because the submodule is
+- Authority: canonical budgets live in the `bitty-terminal-docs` corpus (reference-only; no docs mount in this repository)
+  (`bitty-terminal-docs/specifications/performance-budget-rfc.md`); the product-level
+  `bitty-terminal-docs/product/perf-evidence.md` and `bitty-terminal-docs/product/perf-baseline.md` rows are
+  reconciled through this repository-local record, because the corpus is
   external content owned by another repository.
 
 ## What this wave adds
@@ -171,8 +171,8 @@ per-round/median line and the floor verdict.
 
 ## Reconciliation with the product docs
 
-The canonical product rows live in the `bitty-terminal-docs` submodule
-(`docs/product/perf-evidence.md` and `docs/product/perf-baseline.md`). This
+The canonical product rows live in the `bitty-terminal-docs` corpus (reference-only; no docs mount in this repository)
+(`bitty-terminal-docs/product/perf-evidence.md` and `bitty-terminal-docs/product/perf-baseline.md`). This
 repository cannot edit that external content in this change; the
 reconciliation is: this document plus
 `crates/bitty-perf/baselines/pb-throughput-floor.json` are the repository-local
@@ -187,7 +187,7 @@ floor's fate: batch-apply fast path or re-scope).
 
 ## References
 
-- `docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor`
+- `bitty-terminal-docs/specifications/performance-budget-rfc.md#pb-6-throughput-floor`
 - `crates/bitty-perf/baselines/pb-throughput-floor.json` (committed artifact)
 - `crates/bitty-perf/baselines/parser-throughput.json` (parser-stage only, M1-11)
 - `crates/bitty-perf/src/throughput_floor.rs` (harness)
