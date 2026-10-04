@@ -17,3 +17,6 @@
 *.png binary
 *.jpg binary
 *.zst binary
+# Vendored VT corpus fixtures: byte-stable on every platform checkout (CRLF
+# bytes are intentional corpus content). Never convert or diff.
+*.bin binary

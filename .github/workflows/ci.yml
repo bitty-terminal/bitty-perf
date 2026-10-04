@@ -26,7 +26,93 @@ jobs:
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
         with:
           bun-version: 1.4.0
-      - run: just check
+      # Metadata subset only: the Rust suite gates run in the `rust` job
+      # below. `just check` (all gates) remains the local entry point.
+      - run: just fmt-check
+      - run: just markdownlint
+      - run: just metadata
+      - run: just hygiene
+      - run: just paths
+  rust:
+    name: Rust suite gates (pinned production revision)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install font stack development libraries
+        run: >-
+          sudo apt-get update
+          && sudo apt-get install -y --no-install-recommends
+          libfontconfig1-dev libfreetype6-dev
+      # The pinned channel lives in rust-toolchain.toml; resolve it instead of
+      # repeating the literal so the workflow tracks the file.
+      - name: Resolve Rust channel (rust-toolchain.toml)
+        id: rust-channel
+        run: |
+          channel="$(sed -n 's/^channel = "\(.*\)"$/\1/p' rust-toolchain.toml)"
+          echo "channel=$channel" >> "$GITHUB_OUTPUT"
+      - name: Install pinned Rust toolchain
+        uses: dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de # v1
+        with:
+          toolchain: ${{ steps.rust-channel.outputs.channel }}
+          components: rustfmt, clippy
+      - name: Cache Rust compilation artifacts
+        uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+        with:
+          prefix-key: v1-rust-${{ runner.os }}-${{ steps.rust-channel.outputs.channel }}
+      - uses: extractions/setup-just@53165ef7e734c5c07cb06b3c8e7b647c5aa16db3 # v4
+        with:
+          just-version: "1.58.0"
+      - run: just rust-fmt
+      - run: just rust-clippy
+      - run: just rust-test
+  supply-chain:
+    name: Supply chain (deny/audit)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # The pinned channel lives in rust-toolchain.toml; resolve it instead of
+      # repeating the literal so the workflow tracks the file.
+      - name: Resolve Rust channel (rust-toolchain.toml)
+        id: rust-channel
+        run: |
+          channel="$(sed -n 's/^channel = "\(.*\)"$/\1/p' rust-toolchain.toml)"
+          echo "channel=$channel" >> "$GITHUB_OUTPUT"
+      - name: Install pinned Rust toolchain
+        uses: dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de # v1
+        with:
+          toolchain: ${{ steps.rust-channel.outputs.channel }}
+      - name: Install cargo-deny
+        uses: taiki-e/install-action@4cef1412cce204788f482e778a0b9187f9626a29 # v2.87.21
+        with:
+          tool: cargo-deny@0.20.2
+      - name: Install cargo-audit
+        uses: taiki-e/install-action@4cef1412cce204788f482e778a0b9187f9626a29 # v2.87.21
+        with:
+          tool: cargo-audit@0.22.2
+      # deny.toml allowlists the exact-rev git pins (bitty production revision
+      # plus transitive bitty-ipc/bitty-network) per W-105 pin discipline; any
+      # new git source fails loudly here.
+      - name: Check dependencies (licenses, bans, sources)
+        run: cargo deny check
+      # Duplicated transitive versions are expected from
+      # winit/crossfont/arboard/portable-pty via the pinned bitty revision and
+      # must not be force-unified. `cargo tree --duplicates` exits 0; this step
+      # prints the resolved duplicates for PR visibility and never fails.
+      - name: Observe duplicate dependency versions (informational)
+        run: cargo tree --workspace --duplicates --locked
+      # Unmaintained advisories for ttf-parser/paste are tracked via deny.toml
+      # and ignored for audit until the upstream replacement lands (inherited
+      # from the pinned bitty revision).
+      # cargo-deny and cargo-audit share ~/.cargo/advisory-db; deny populates it
+      # so clear before audit to avoid "Refusing to initialize non-empty directory" failure.
+      - name: Audit advisories
+        run: rm -rf ~/.cargo/advisory-db && cargo audit --ignore RUSTSEC-2024-0436 --ignore RUSTSEC-2026-0192
   actionlint:
     name: Lint GitHub Actions workflows
     runs-on: ubuntu-latest
