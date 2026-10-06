@@ -1,6 +1,6 @@
 # bitty-perf
 
-Independent performance validation suite for Bitty (W-105 relocation, bitty CTX-0931). Read [AGENTS](AGENTS.md) and [TODO](TODO.md).
+Independent performance validation suite for Bitty (W-105 relocation, bitty CTX-0931 / bitty#1619). Read [AGENTS](AGENTS.md) and [TODO](TODO.md).
 
 - Suite: `crates/bitty-perf` — headless, bounded performance baseline
   harness (startup/latency/idle/real-window/real-soak/throughput-floor/
@@ -20,6 +20,6 @@ Independent performance validation suite for Bitty (W-105 relocation, bitty CTX-
 - This repository is `publish = false` tooling with no shipped runtime
   authority; an independent repository is not an independent gate.
 
-Prerequisite: W-75 / bitty-docs CTX-0265, Issue #404, and W-105 Core CTX-0931. Preserve baseline provenance, budget gates and reproducibility; pin production revisions.
+Prerequisite: W-75 / bitty-docs CTX-0265 / bitty-docs#404, and W-105 / bitty CTX-0931 / bitty#1619, under the bitty#1629 umbrella (metadata-only until contracts accepted). Preserve baseline provenance, budget gates and reproducibility; pin production revisions.
 
-CTX-0001 -> CTX-0002 -> CTX-0003 -> CTX-0004 maps to Issues #4 -> #3 -> #2 -> #1. CTX-0001 (bootstrap) is complete: metadata gates, independent review, first publication, redacted CarryCtx snapshot and branch protection are recorded. Suite migration is proposed under CTX-0003; acceptance (including CTX-0004 independent verification) belongs to the owning tasks.
+CTX-0001 -> CTX-0002 -> CTX-0003 -> CTX-0004 maps to Issues #4 -> #3 -> #2 -> #1. CTX-0001 (bootstrap) is complete: metadata gates, independent review, first publication, redacted CarryCtx snapshot and branch protection are recorded. Suite migration landed as PR #7 (CTX-0003, bitty@9bc73207); acceptance (including CTX-0004 independent verification) belongs to the owning tasks.
