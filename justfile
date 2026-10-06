@@ -1,4 +1,4 @@
-# Metadata-only gates. These are not Rust/Lua product evidence.
+# Metadata and validation-suite gates. Metadata gates are not product evidence; Rust gates prove the moved suite against its pinned production revision.
 prettier_version := "3.9.6"
 markdownlint_version := "0.23.1"
 actionlint_version := "1.7.12"
@@ -116,7 +116,7 @@ workflow-import:
     git fetch origin refs/heads/carryctx-snapshots:refs/remotes/origin/carryctx-snapshots
     carryctx import --from-git refs/remotes/origin/carryctx-snapshots
 
-# No source exists: fail rather than claim product verification.
+# Suite exists under crates/bitty-perf (PR #7); product verification requires CTX-0003 acceptance and CTX-0004 independent verification: fail rather than claim it here.
 product:
-    @echo 'Blocked: approved source and product gates have not landed.' >&2
+    @echo 'Blocked: suite exists but CTX-0003 acceptance and CTX-0004 independent verification are pending.' >&2
     @exit 1
