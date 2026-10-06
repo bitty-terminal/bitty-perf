@@ -1,6 +1,6 @@
 # bitty-perf
 
-Independent performance validation suite for Bitty (W-105 relocation, bitty CTX-0931 / bitty#1619). Read [AGENTS](AGENTS.md) and [TODO](TODO.md).
+Independent performance validation suite for Bitty (W-105 relocation, bitty CTX-0931 / bitty#1619). Read [AGENTS](AGENTS.md). Management lives in CarryCtx.
 
 - Suite: `crates/bitty-perf` — headless, bounded performance baseline
   harness (startup/latency/idle/real-window/real-soak/throughput-floor/
