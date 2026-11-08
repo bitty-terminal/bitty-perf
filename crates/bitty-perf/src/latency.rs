@@ -634,7 +634,7 @@ pub const LATENCY_BASELINE_REL_PATH: &str = "crates/bitty-perf/baselines/pb-late
 pub const LATENCY_BASELINE_SAMPLES: usize = 1_000;
 
 fn escape(s: &str) -> String {
-    s.replace('\\', "\\\\").replace('"', "\\\"")
+    super::idle::escape_json(s)
 }
 
 /// The committed evidence artifact, embedded at compile time.

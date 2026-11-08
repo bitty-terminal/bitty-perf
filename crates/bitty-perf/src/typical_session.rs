@@ -303,7 +303,7 @@ pub fn measure_typical_session_with(tabs: usize, bytes_per_tab: usize) -> Typica
 // ---------------------------------------------------------------------------
 
 fn escape(s: &str) -> String {
-    s.replace('\\', "\\\\").replace('"', "\\\"")
+    super::idle::escape_json(s)
 }
 
 /// The committed evidence artifact, embedded at compile time.
@@ -447,5 +447,30 @@ mod tests {
             ..BaselineMeta::default()
         };
         assert!(baseline_json(&report, &meta).is_err());
+    }
+
+    #[test]
+    fn control_chars_in_provenance_are_escaped_in_json() {
+        let report = TypicalSessionReport {
+            tabs: 8,
+            bytes_per_tab: 1024,
+            total_bytes: 8192,
+            rss_before_mb: Some(50.0),
+            rss_open_mb: Some(60.0),
+            rss_close_mb: Some(52.0),
+            reason: None,
+            elapsed: Duration::from_millis(10),
+        };
+        let meta = BaselineMeta {
+            task: "CTX-0005".to_string(),
+            issues: vec![16],
+            captured_at: "2026-11-08".to_string(),
+            revision: "rev\nwith\tcontrols".to_string(),
+            command: "cmd\r\nline".to_string(),
+            profile: "test".to_string(),
+        };
+        let json = baseline_json(&report, &meta).expect("must serialize");
+        assert!(json.contains("\"revision\": \"rev\\nwith\\tcontrols\""));
+        assert!(json.contains("\"command\": \"cmd\\r\\nline\""));
     }
 }
