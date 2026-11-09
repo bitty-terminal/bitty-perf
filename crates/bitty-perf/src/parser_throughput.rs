@@ -702,23 +702,14 @@ fn read_compat_corpora(root: &Path) -> Result<Vec<(PathBuf, Vec<u8>)>, String> {
     Ok(out)
 }
 
-fn find_key<'a>(json: &'a str, key: &str) -> Option<&'a str> {
-    let needle = format!("\"{key}\"");
-    let pos = json.find(&needle)?;
-    let rest = &json[pos + needle.len()..];
-    let colon = rest.find(':')?;
-    Some(&rest[colon + 1..])
-}
-
-fn json_string_after(json: &str, key: &str) -> Option<String> {
-    let after = find_key(json, key)?.trim_start();
-    let mut chars = after.chars();
-    if chars.next()? != '"' {
+fn parse_json_quoted(input: &str) -> Option<(String, &str)> {
+    let mut chars = input.char_indices();
+    if chars.next()?.1 != '"' {
         return None;
     }
     let mut out = String::new();
     let mut escaped = false;
-    for ch in chars {
+    for (idx, ch) in chars {
         if escaped {
             out.push(match ch {
                 'n' => '\n',
@@ -731,11 +722,33 @@ fn json_string_after(json: &str, key: &str) -> Option<String> {
         }
         match ch {
             '\\' => escaped = true,
-            '"' => return Some(out),
+            '"' => return Some((out, &input[idx + 1..])),
             other => out.push(other),
         }
     }
     None
+}
+
+fn find_key<'a>(json: &'a str, key: &str) -> Option<&'a str> {
+    let mut rest = json;
+    while let Some(quote_pos) = rest.find('"') {
+        let (parsed, after_quote) = parse_json_quoted(&rest[quote_pos..])?;
+        let trimmed = after_quote.trim_start();
+        if let Some(after_colon) = trimmed.strip_prefix(':') {
+            if parsed == key {
+                return Some(after_colon);
+            }
+            rest = after_colon;
+        } else {
+            rest = trimmed;
+        }
+    }
+    None
+}
+
+fn json_string_after(json: &str, key: &str) -> Option<String> {
+    let after = find_key(json, key)?.trim_start();
+    parse_json_quoted(after).map(|(s, _)| s)
 }
 
 fn json_number_after(json: &str, key: &str) -> Option<f64> {
@@ -808,6 +821,27 @@ mod tests {
         assert!((parsed.corpora[0].mb_s - 100.0).abs() < 1e-9);
         assert!((parsed.corpora[1].mb_s - 25.0).abs() < 1e-9);
         assert!((parsed.regression_factor - REGRESSION_FACTOR).abs() < 1e-9);
+
+        // Keys embedded inside string values (e.g. command) must not shadow top-level keys.
+        let tricky = baseline_json(
+            &ParserThroughputReport {
+                corpora: vec![CorpusMeasurement {
+                    id: PLAIN_TEXT_ID,
+                    bytes: 1024,
+                    actions: 10,
+                    mb_s: 100.0,
+                }],
+                sample_bytes: 1024,
+                rounds: 1,
+                elapsed_secs: 0.01,
+            },
+            &BaselineMeta {
+                command: "echo \"regression_factor\": 999.0".to_string(),
+                ..BaselineMeta::default()
+            },
+        );
+        let parsed_tricky = parse_baseline(&tricky).expect("tricky baseline must parse");
+        assert!((parsed_tricky.regression_factor - REGRESSION_FACTOR).abs() < 1e-9);
     }
 
     #[test]

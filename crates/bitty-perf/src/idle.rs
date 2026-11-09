@@ -97,7 +97,11 @@ pub struct IdleReport {
 
 fn truncate(mut s: String, max: usize) -> String {
     if s.len() > max {
-        s.truncate(max);
+        let mut cut = max;
+        while !s.is_char_boundary(cut) {
+            cut -= 1;
+        }
+        s.truncate(cut);
     }
     s
 }
@@ -1121,5 +1125,11 @@ mod tests {
             super::idle_window_secs().clamp(1, super::MAX_IDLE_WINDOW_SECS),
             super::idle_window_secs()
         );
+    }
+
+    #[test]
+    fn truncate_never_splits_a_utf8_char_boundary() {
+        assert_eq!(super::truncate("héllo".to_string(), 2), "h");
+        assert_eq!(super::truncate("ab💥cd".to_string(), 4), "ab");
     }
 }

@@ -536,7 +536,7 @@ pub fn format_session_report(
 }
 
 fn escape(value: &str) -> String {
-    value.replace('\\', "\\\\").replace('"', "\\\"")
+    super::idle::escape_json(value)
 }
 
 /// Format an RSS number for evidence JSON: three decimals when finite, `null`
